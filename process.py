@@ -10,7 +10,13 @@ with open("./quotes.csv", "r") as file:
     for row in reader:
         row["score"] = int(row["score"])
         row["votes"] = int(row["votes"])
-        row["timestamp"] = parse('Nov. 14, 2023, 2:41 p.m.').strftime("%Y-%m-%d %H:%M:%S")
+        if "noon" in row["timestamp"]:
+            row["timestamp"] = row["timestamp"][:-4]
+            row["timestamp"] += "12:00 P.M."
+        elif "midnight" in row["timestamp"]:
+            row["timestamp"] = row["timestamp"][:-len("midnight")]
+            row["timestamp"] += "12:00 A.M."
+        row["timestamp"] = parse(row["timestamp"]).strftime("%Y-%m-%d %H:%M:%s")
         
         row['quote'] = "''".join(row['quote'].split("'"))
         row['notes'] = "''".join(row['notes'].split("'"))
