@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
 from dateutil.parser import parse
-
+import pprint
 data = []
 
 with open("./quotes.csv", "r") as file:
@@ -22,8 +22,12 @@ with open("./quotes.csv", "r") as file:
         row['notes'] = "''".join(row['notes'].split("'"))
         row['tags'] = "''".join(row['tags'].split("'"))
         data.append(row)
+pprint.pprint(data)
 with open("./processed.csv", "w") as file:
-    file.write("timestamp,score,votes,quote,notes,tags"+"\n")
+    # file.write("timestamp,score,votes,quote,notes,tags"+"\n")
+    writer = csv.DictWriter(file, fieldnames=["timestamp", "score", "votes", "quote", "notes", "tags"])
+    writer.writeheader()
     for row in data:
-        string = f"{row['timestamp']},{row['score']},{row['votes']},'{row['quote']}','{row['notes']}','{row['tags']}'"
-        file.write(string + "\n")
+        writer.writerow(row)
+        # string = f'{row["timestamp"]},{row["score"]},{row["votes"]},"{row["quote"]}","{row["notes"]}","{row["tags"]}"'
+        # file.write(string + "\n")
