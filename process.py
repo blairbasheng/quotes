@@ -16,13 +16,12 @@ with open("./quotes.csv", "r") as file:
         elif "midnight" in row["timestamp"]:
             row["timestamp"] = row["timestamp"][:-len("midnight")]
             row["timestamp"] += "12:00 A.M."
-        row["timestamp"] = parse(row["timestamp"]).strftime("%Y-%m-%d %H:%M:%s")
+        row["timestamp"] = parse(row["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
         
         row['quote'] = "''".join(row['quote'].split("'"))
         row['notes'] = "''".join(row['notes'].split("'"))
         row['tags'] = "''".join(row['tags'].split("'"))
         data.append(row)
-pprint.pprint(data)
 with open("./processed.csv", "w") as file:
     # file.write("timestamp,score,votes,quote,notes,tags"+"\n")
     writer = csv.DictWriter(file, fieldnames=["timestamp", "score", "votes", "quote", "notes", "tags"])
@@ -31,3 +30,10 @@ with open("./processed.csv", "w") as file:
         writer.writerow(row)
         # string = f'{row["timestamp"]},{row["score"]},{row["votes"]},"{row["quote"]}","{row["notes"]}","{row["tags"]}"'
         # file.write(string + "\n")
+
+with open("./queries.txt", "w") as file:
+    for row in data:
+        data_string = f"'{row['timestamp']}', {row['score']}, {row['votes']}, '{row['quote']}', '{row['notes']}', '{row['tags']}'"
+        string = f"INSERT INTO test_quotes(timestamp, score, votes, quote, notes, tags) VALUES({data_string})"
+
+        file.write(string + "\n")
