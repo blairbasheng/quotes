@@ -36,4 +36,4 @@ with open("./queries.txt", "w") as file:
         data_string = f"'{row['timestamp']}', {row['score']}, {row['votes']}, '{row['quote']}', '{row['notes']}', '{row['tags']}'"
         string = f"INSERT INTO test_quotes(timestamp, score, votes, quote, notes, tags) VALUES({data_string})"
 
-        file.write(string + "\n")
+        file.write(string + ";\n")
